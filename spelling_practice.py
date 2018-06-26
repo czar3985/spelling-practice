@@ -6,6 +6,7 @@
 import http.server
 import requests
 import webbrowser
+import os
 from urllib.parse import unquote, parse_qs
 
 words = []
@@ -231,6 +232,7 @@ class Speller(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    server_address = ('', 8000)
+    port = int(os.environ.get('PORT', 8000))   # Use PORT if it's there.
+    server_address = ('', port)
     httpd = http.server.HTTPServer(server_address, Speller)
     httpd.serve_forever()
