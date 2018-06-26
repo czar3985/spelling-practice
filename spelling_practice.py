@@ -101,11 +101,15 @@ def OpenResultPage(self):
 
     result_container = ''
     for index, item in enumerate(words):
-        result_container += "<p>{}. {} ".format(str(index+1), answers[index])
-        if item == answers[index]:
-            result_container += "<strong>Correct</strong></p>"
+        if index >= len(answers): # If answers given are less than expected, put no answer
+            result_container += "<p>{}. <em>No answer</em> ".format(str(index+1))
         else:
-            result_container += "<strong class='incorrect_answer'>Incorrect</strong>. The correct spelling is {}.</p>".format(item)
+            result_container += "<p>{}. {} ".format(str(index+1), answers[index])
+
+            if item == answers[index]:
+                result_container += "<strong>Correct</strong></p>"
+            else:
+                result_container += "<strong class='incorrect_answer'>Incorrect</strong>. The correct spelling is {}.</p>".format(item)
 
     response = html_string.format(result_container)
 
@@ -151,8 +155,15 @@ def SubmitAnswers(self, body):
     params = parse_qs(body)
 
     answers = []
-    for index, item in enumerate(params):
-        answers.append(params["answer{}".format(str(index + 1))][0])
+    params_left = len(params)
+    for i in range(1, 11):
+        if params_left == 0:
+            break
+        if "answer{}".format(str(i)) in params: # If answer was given for the nummber
+            answers.append(params["answer{}".format(str(i))][0])
+            params_left -= 1
+        else:
+            answers.append('')
 
     # Redirect to Result Page
     self.send_response(303)
@@ -169,6 +180,13 @@ def SaveNewWords(self, body):
     words = [] # Initialize so that it will get a new set everytime
     for index, item in enumerate(params):
         words.append(params["word{}".format(str(index + 1))][0])
+
+    if len(words) == 0:
+        self.send_response(400)
+        self.send_header('Content-type', 'text/plain; charset=utf-8')
+        self.end_headers()
+        self.wfile.write("Missing input".encode())
+        return
 
     # Serve a redirect to the Setup page.
     self.send_response(303)
