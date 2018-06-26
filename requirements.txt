@@ -1,2 +1,2 @@
 requests>=2.12
-webbrowser>=5.0
+webbrowser>=2.7.5
