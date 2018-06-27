@@ -5,7 +5,6 @@
 
 import http.server
 import requests
-import webbrowser
 import os
 from urllib.parse import unquote, parse_qs
 
@@ -139,9 +138,6 @@ def UsePreviousWords(self):
 
 
 def StartTest(self):
-    # Open online reader in another tab
-    webbrowser.open("https://www.text2speech.org/", new=2)
-
     # Redirect to Practice Page
     self.send_response(303)
     self.send_header('Location', '/practice.html')
