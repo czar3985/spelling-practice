@@ -38,7 +38,3 @@ The application is also deployed in http://spellingpractice.herokuapp.com/.
 ## To Do
 
 Use HTML5 API SpeechSynthesis instead of a third-party website.
-
-## License
-
-Spelling Practice is released under the [MIT License](https://opensource.org/licenses/MIT).
