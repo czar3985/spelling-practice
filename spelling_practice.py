@@ -26,6 +26,21 @@ def OpenCSSFile(self):
     css_file.close()
 
 
+def OpenJSFile(self):
+    # Send a 200 OK response.
+    self.send_response(200)
+
+    # Send headers.
+    self.send_header('Content-type', 'text/javascript')
+    self.end_headers()
+
+    # Send the response.
+    js_file = open("main.js", encoding='utf-8-sig')
+    self.wfile.write(js_file.read().encode())
+    print(js_file.read())
+    js_file.close()
+
+
 def OpenIndexPage(self):
     # Send a 200 OK response.
     self.send_response(200)
@@ -59,7 +74,7 @@ def OpenSetupPage(self):
 
     words_container = ''
     for index, item in enumerate(words):
-        words_container += "<p>Number {}. {}. {}.</p>".format(str(index + 1), item, item)
+        words_container += "<p>{}. {}</p>".format(str(index + 1), item)
     response = html_string.format(words_container)
 
     # Send the response.
@@ -77,8 +92,22 @@ def OpenPracticePage(self):
     # Put the response together out of the html file and the spelling words.
     # Load html file into the response
     html_file = open('practice.html', encoding='utf-8-sig')
-    response = html_file.read()
+    html_string = html_file.read()
     html_file.close()
+
+    result_container = ''
+    for index, item in enumerate(words):
+        result_container += '''
+            <div class="form-group row">
+                <label for="answer{}" class="col-sm-1 col-form-label">{}.</label>
+                <input type="button" value="Play" class="btn col-sm-1 play-button" data-speech="{}" />
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="answer{}" name="answer{}">
+                </div>
+            </div>
+            '''.format(str(index+1), str(index+1), words[index], str(index+1), str(index+1))
+
+    response = html_string.format(result_container)
 
     # Send the response.
     self.wfile.write(response.encode())
@@ -201,6 +230,10 @@ class Speller(http.server.BaseHTTPRequestHandler):
          # Handle css file getting
         if self.path == "/main.css":
             OpenCSSFile(self)
+            return
+
+        elif self.path == "/main.js":
+            OpenJSFile(self)
             return
 
         elif self.path == "/favicon.ico":

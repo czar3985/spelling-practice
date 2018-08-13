@@ -4,19 +4,16 @@ The spelling practice application helps kids learn and practice
 spelling up to 10 vocabulary words at a time.
 
 The user inputs the spelling words or chooses the words saved from the 
-last session. The website then helps set up the text to be read
-by an [online text-to-speech application](https://www.text2speech.org/).
-The user inputs the answers to the Spelling Practice webpage and results
-of the practice test is displayed
-
-![Spelling Practice website](./screenshots.jpg?raw=true "Title")
+last session. It uses the HTML5 SpeechSynthesis API for reading each word
+to be spelled. The user's answers are checked and results
+of the practice test are displayed.
 
 ## Prerequisites
 
 1. Install **python 3.6.3**.
 2. Clone the github repository [spelling-practice](https://github.com/czar3985/spelling-practice).
 ```
-$ git clone https://github.com/czar3985/spelling-practice
+$ git clone https://github.com/czar3985/spelling-practice.git
 ```
 
 ## Usage
@@ -35,6 +32,3 @@ _words.txt_ contains the previously saved spelling words.
 **Heroku page:**
 The application is also deployed in http://spellingpractice.herokuapp.com/.
 
-## To Do
-
-Use HTML5 API SpeechSynthesis instead of a third-party website.
